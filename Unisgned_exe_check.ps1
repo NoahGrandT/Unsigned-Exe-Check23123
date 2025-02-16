@@ -5,6 +5,16 @@
 # to start script. 
 # First: Create Folder "Temp" in your C: drive.
 
+
+function Unzip {
+    param(
+        [string]$zipFilePath,
+        [string]$destinationPath
+    )
+    Add-Type -AssemblyName 'System.IO.Compression.FileSystem'
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipFilePath, $destinationPath)
+}
+
 New-Item -Path "C:\Temp\" -ItemType Directory -Force | Out-Null 
 Clear
 $drives = Get-Volume | Where-Object { $_.DriveLetter -match "^[A-Z]$" } | Select-Object DriveLetter, FileSystemLabel, @{Name="Size (GB)";Expression={"{0:N2}" -f ($_.Size / 1GB)}}
@@ -137,6 +147,27 @@ Get-ChildItem -Path $scanPath -Filter *.exe -Recurse -Force -ErrorAction Silentl
 if (`$unsignedFiles.Count -gt 0) {
     `$unsignedFiles | Export-Csv -Path "C:\Temp\UnsignedExecutables.csv" -Delimiter "," -Encoding UTF8 -NoTypeInformation
     Write-Host "CSV export successful. The file is located at C:\Temp\UnsignedExecutables.csv"
+
+    `$downloadTE = Read-Host "Do you want to download the Timeline explorer? (Y/N)"
+    if (`$downloadTE -eq "Y" -or `$downloadTE -eq "y") {
+        Write-Host "`n`nDownloading Timeline Explorer..." -ForegroundColor green
+        (New-Object System.Net.WebClient).DownloadFile("https://download.mikestammer.com/net6/TimelineExplorer.zip", "C:\temp\TimelineExplorer.zip")
+        Unzip -zipFilePath "C:\temp\TimelineExplorer.zip" -destinationPath "C:\temp\TimelineExplorer"
+        Write-Host "Timeline Explorer downloaded and extracted successfully." -ForegroundColor green
+        Write-Host "Contoniueing in " -NoNewline
+        Write-Host "5 " -NoNewline -ForegroundColor magenta
+        Write-Host "Seconds." -NoNewline
+        Start-Sleep 5
+    } elseif (`$downloadTE -eq "N" -or `$downloadTE -eq "n") {
+        Write-Host "`n`n`tContinueing Script in " -NoNewline
+        Write-Host "2 " -NoNewline -ForegroundColor magenta
+        Write-Host "Seconds." -NoNewline
+        Start-Sleep 2
+    } else {
+        Write-Host "`n`n`tThis wasn't a correct answer. Restarting script in " -NoNewline
+        Write-Host "2 " -NoNewline -ForegroundColor magenta
+        Write-Host "Seconds" -NoNewline
+    }
 
     Write-Host "`n`n`tClosing Script in " -NoNewline 
     Write-Host "2 " -NoNewLine -ForegroundColor Magenta
