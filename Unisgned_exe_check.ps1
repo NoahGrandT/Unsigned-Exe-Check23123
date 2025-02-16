@@ -1,10 +1,6 @@
 # Unsigned Exe Check by Noah
-# Use
-# Clear-Host
-# & "C:\Temp\Unsigned_exe_check.ps1"
-# to start script. 
-# First: Create Folder "Temp" in your C: drive.
-
+# Version: v1.2
+# Last Updated: 2025-02-16
 
 function Unzip {
     param(
