@@ -80,7 +80,7 @@ if ($groupedFiles.Count -gt 0) {
 				Start-Process explorer.exe $folder
             } elseif ($openFolder -eq 'N' -or $openFolder -eq 'n') {
 				Write-Host "`n`n`tUser aborted and chose No. Restart Script if needed." -ForegroundColor red
-    				Write-Host "`n`n`Continueing script in " -NoNewline -ForegroundColor green
+    				Write-Host "`n`n`tContinueing script in " -NoNewline -ForegroundColor green
 				Write-Host "2 " -NoNewLine -ForegroundColor Magenta
 				Write-Host "Seconds`n`n`n" -NoNewline -ForegroundColor green
 				Start-Sleep 2
