@@ -73,7 +73,8 @@ if ($groupedFiles.Count -gt 0) {
         Write-Host "`n`nFound $fileCount unsigned files in '$folder'." -ForegroundColor red
 		
 		$_.Group | Format-Table -AutoSize
-		
+	$openFolderques = Read-Host "Do you want to open any folder? (Y/N)"
+ 	if ($openFolderques -eq "Y" -or $openFolderques -eq "y") {
         if ($fileCount -gt 2) {
             $openFolder = Read-Host "Do you want to open the folder '$folder' with $fileCount suspicious files? (Y/N)"
             if ($openFolder -eq 'Y' -or $openFolder -eq 'y') {
@@ -100,8 +101,21 @@ if ($groupedFiles.Count -gt 0) {
 				& "C:\Temp\Unsigned_exe_check.ps1"
 			}
         }
-
-        
+	} elseif ($openFolderques -eq "N" -or $openFolderques -eq "n") {
+ 		Write-Host "`n`n`tUser chose No." -ForegroundColor red
+   		Write-Host "`n`n`tContinueing Script in " -NoNewline 
+		Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+		Write-Host "Seconds`n`n`n" -NoNewline
+		Start-Sleep 2
+   	} else {
+		Write-Host "`n`n`tUser didn't pick a correct answer." -ForegroundColor red
+		Write-Host "`n`n`tRestarting Script in " -NoNewline 
+		Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+		Write-Host "Seconds`n`n`n" -NoNewline
+		Start-Sleep 2
+		Clear-Host
+		& "C:\Temp\Unsigned_exe_check.ps1"
+        }
     }
 } else {
     Write-Host "No unsigned files found." -ForegroundColor green
