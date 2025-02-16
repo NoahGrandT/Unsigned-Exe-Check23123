@@ -137,6 +137,33 @@ Get-ChildItem -Path $scanPath -Filter *.exe -Recurse -Force -ErrorAction Silentl
 if (`$unsignedFiles.Count -gt 0) {
     `$unsignedFiles | Export-Csv -Path "C:\Temp\UnsignedExecutables.csv" -Delimiter "," -Encoding UTF8 -NoTypeInformation
     Write-Host "CSV export successful. The file is located at C:\Temp\UnsignedExecutables.csv"
+    $downloadTE = Read-Host "Do you want to download the Timeline explorer? (Y/N)"
+    if ($downloadTE -eq 'Y' -or $downloadTE -eq 'y') {
+                Write-Host "User chose yes." -ForegroundColor green
+		
+		Write-Host "`n`nDownloading Timeline Explorer" -ForegroundColor orange
+                (New-Object System.Net.WebClient).DownloadFile("https://download.mikestammer.com/net6/TimelineExplorer.zip", "C:\temp\programs\TimelineExplorer.zip")
+                Unzip -zipFilePath "C:\temp\programs\TimelineExplorer.zip" -destinationPath "C:\temp\programs\TimelineExplorer"
+                Write-Host "`n`n`tTimeline Explorer downloaded and extracted successfully. Returning to Programs Menu in " -ForegroundColor green
+		Write-Host "5 " -NoNewLine -ForegroundColor Magenta
+  		Write-Host "Seconds`n`n`n" -NoNewline
+    		Start-Sleep 5
+            } elseif ($downloadTE -eq 'N' -or $downloadTE -eq 'n') {
+		Write-Host "`n`n`tUser aborted and chose No. Restart Script if needed." -ForegroundColor red
+    		Write-Host "`n`n`Continueing script in " -NoNewline -ForegroundColor green
+		Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+		Write-Host "Seconds`n`n`n" -NoNewline -ForegroundColor green
+		Start-Sleep 2
+	    } else {
+		Write-Host "`n`n`tUser didn't pick a correct answer." -ForegroundColor red
+		Write-Host "`n`n`tReturning to question in " -NoNewline 
+		Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+		Write-Host "Seconds`n`n`n" -NoNewline
+		Start-Sleep 2
+		Clear-Host
+   		& $csvScriptPath
+	     }
+
     Write-Host "`n`n`tClosing Script in " -NoNewline 
     Write-Host "2 " -NoNewLine -ForegroundColor Magenta
     Write-Host "Seconds`n`n`n" -NoNewline
