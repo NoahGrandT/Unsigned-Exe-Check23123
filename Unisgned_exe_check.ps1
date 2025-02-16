@@ -6,7 +6,7 @@
 # First: Create Folder "Temp" in your C: drive.
 
 New-Item -Path "C:\Temp\" -ItemType Directory -Force | Out-Null 
-
+Clear
 $drives = Get-Volume | Where-Object { $_.DriveLetter -match "^[A-Z]$" } | Select-Object DriveLetter, FileSystemLabel, @{Name="Size (GB)";Expression={"{0:N2}" -f ($_.Size / 1GB)}}
 
 Write-Host "Available Drives:`n"
@@ -80,6 +80,12 @@ if ($groupedFiles.Count -gt 0) {
 				Start-Process explorer.exe $folder
             } elseif ($openFolder -eq 'N' -or $openFolder -eq 'n') {
 				Write-Host "`n`n`tUser aborted and chose No. Restart Script if needed." -ForegroundColor red
+    				Write-Host "`n`n`Closing Script in " -NoNewline 
+				Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+				Write-Host "Seconds`n`n`n" -NoNewline
+				Start-Sleep 2
+    				Clear
+				exit
 			} else {
 				Write-Host "`n`n`tUser didn't pick a correct answer." -ForegroundColor red
 				Write-Host "`n`n`tRestarting Script in " -NoNewline 
@@ -133,8 +139,20 @@ Get-ChildItem -Path $scanPath -Filter *.exe -Recurse -Force -ErrorAction Silentl
 if (`$unsignedFiles.Count -gt 0) {
     `$unsignedFiles | Export-Csv -Path "C:\Temp\UnsignedExecutables.csv" -Delimiter "," -Encoding UTF8 -NoTypeInformation
     Write-Host "CSV export successful. The file is located at C:\Temp\UnsignedExecutables.csv"
+    Write-Host "`n`n`tClosing Script in " -NoNewline 
+    Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+    Write-Host "Seconds`n`n`n" -NoNewline
+    Start-Sleep 2
+    Clear
+    exit
 } else {
     Write-Host "No unsigned files found."
+    Write-Host "`n`n`tClosing Script in " -NoNewline 
+    Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+    Write-Host "Seconds`n`n`n" -NoNewline
+    Start-Sleep 2
+    Clear
+    exit
 }
 "@
 
@@ -150,6 +168,12 @@ if ($executeScript -eq 'Y' -or $executeScript -eq 'y') {
     & $csvScriptPath
 } elseif ($executeScript -eq 'N' -or $executeScript -eq 'n') {
     Write-Host "`n`n`tUser aborted and chose No. Restart script if needed." -ForegroundColor red
+    Write-Host "`n`n`tClosing Script in " -NoNewline 
+    Write-Host "2 " -NoNewLine -ForegroundColor Magenta
+    Write-Host "Seconds`n`n`n" -NoNewline
+    Start-Sleep 2
+    Clear
+    exit
 } else {
 	Write-Host "`n`n`tUser didn't pick a correct answer." -ForegroundColor red
 	Write-Host "`n`n`tRestarting Script in " -NoNewline 
